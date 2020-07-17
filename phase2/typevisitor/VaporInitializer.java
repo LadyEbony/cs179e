@@ -20,6 +20,7 @@ public class VaporInitializer extends GJDepthFirst<VaporReturnStruct, String>{
 		depth = 0;
 	}
 	
+	// Use this function to add a new line with proper tab 
 	public void addContentLine(String c){
 		for(int i = 0; i < depth; ++i) content += "  ";
 		content += c + "\n";
@@ -92,13 +93,18 @@ public class VaporInitializer extends GJDepthFirst<VaporReturnStruct, String>{
 		n.f0.accept(this, null);
 		n.f1.accept(this, null);
 		
+		// Get method
 		String methodId = n.f2.accept(this, null).identifier;
 		methodEnvironment = classEnvironment.getMethod(methodId);
 		
+		// Get method parameters
 		List<String> parameters = new ArrayList<String>();
 		parameters.add("this");
 		for(String p: methodEnvironment.parameterIDs)
 			parameters.add(p);
+		
+		// Add function header
+		// Increase depth by 1 for tab
 		addContentLine("func " + classEnvironment.identifier + "." + methodEnvironment.identifier + "(" + String.join(" ", parameters) + ")");
 		depth += 1;
 		var = 0;
@@ -124,36 +130,64 @@ public class VaporInitializer extends GJDepthFirst<VaporReturnStruct, String>{
 		
 		// TODO: Do a null check
 		VaporReturnStruct exp = n.f0.accept(this, null);
-		if (exp == null || exp.type == null) return null;
+		
+		// This null check exists until we implement all expression visits
+		if (exp == null) return null;
 		
 		String varid = "t." + var++;
 		addContentLine(varid + " = [" + exp.identifier + "]");
 	
+		// apply function table offset
 		n.f1.accept(this, null);
 		String methodId = n.f2.accept(this, null).identifier;
-		addContentLine(varid + " = [" + varid + "+" + exp.type.getMethod(methodId).offset + "]");
+		MethodEnvironment menv = exp.type.getMethod(methodId);
+		addContentLine(varid + " = [" + varid + "+" + menv.offset + "]");
 		
 		n.f3.accept(this, null);
 		n.f4.accept(this, null);
 		n.f5.accept(this, null);
 		
-		return null;
+		// TODO: Use this identifier for the assignment visit
+		return new VaporReturnStruct("call " + varid + "(TODO ADD LIST)", environment.getClass(menv.returnType));
 	}
 	
 	public VaporReturnStruct visit(PrimaryExpression n, String para) {
+		// The "" parameter makes the variable identifier Vapor compliant 
 		return n.f0.accept(this, "");
 	}
 	
 	public VaporReturnStruct visit(Identifier n, String para){
+		// Using string as our parameter is honestly very stupid
+		// But java doesn't allow generic types???????
+		// It has to be a reference type??????????
+		// So String it will be cause lazy
+		
+		// Use null if you just want the identifier (for like function identifiers)
+		// Use "" if you want the id converted for variable use
+		
 		String id = n.f0.toString();
-		if (para == null){
-			return new VaporReturnStruct(id, null);
-		} else { 
-			String fieldType = methodEnvironment.getFieldType(id);
-			if (fieldType == null)
-				return new VaporReturnStruct(id, null);
-			return new VaporReturnStruct(id, environment.getClass(fieldType));
+		if (para != null){
+			// method fields
+			String fieldType = methodEnvironment.getFieldType(id);		
+			if (fieldType != null){
+				return new VaporReturnStruct(id, environment.getClass(fieldType));
+			}
+			
+			// parameters
+			String parameterType = methodEnvironment.getIdType(id);
+			if (parameterType != null){
+				return new VaporReturnStruct(id, environment.getClass(parameterType));
+			}			
+			
+			// class fields
+			FieldEnvironment field = classEnvironment.getField(id);
+			if (field != null){
+				id = "[this+" + field.offset + "]";
+				return new VaporReturnStruct(id, classEnvironment);
+			}
+			
 		}
+		return new VaporReturnStruct(id, null);
 	}
 	
 	public VaporReturnStruct visit(AllocationExpression n, String para) {
