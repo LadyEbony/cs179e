@@ -1,0 +1,160 @@
+
+const vmt_BT
+  :BT.Start
+
+const vmt_Tree
+  :Tree.Init
+  :Tree.SetRight
+  :Tree.SetLeft
+  :Tree.GetRight
+  :Tree.GetLeft
+  :Tree.GetKey
+  :Tree.SetKey
+  :Tree.GetHas_Right
+  :Tree.GetHas_Left
+  :Tree.SetHas_Left
+  :Tree.SetHas_Right
+  :Tree.Compare
+  :Tree.Insert
+  :Tree.Delete
+  :Tree.Remove
+  :Tree.RemoveRight
+  :Tree.RemoveLeft
+  :Tree.Search
+  :Tree.Print
+  :Tree.RecPrint
+
+func Main()
+  t.0 = HeapAllocZ(4)
+  [t.0] = :vmt_BT
+  t.1 = [t.0]
+  t.1 = [t.1+0]
+
+func BT.Start(this)
+  t.0 = HeapAllocZ(28)
+  [t.0] = :vmt_Tree
+  t.1 = [root]
+  t.1 = [t.1+0]
+  t.2 = [root]
+  t.2 = [t.2+72]
+  t.3 = [root]
+  t.3 = [t.3+48]
+  t.4 = [root]
+  t.4 = [t.4+72]
+  t.5 = [root]
+  t.5 = [t.5+48]
+  t.6 = [root]
+  t.6 = [t.6+48]
+  t.7 = [root]
+  t.7 = [t.7+48]
+  t.8 = [root]
+  t.8 = [t.8+48]
+  t.9 = [root]
+  t.9 = [t.9+48]
+  t.10 = [root]
+  t.10 = [t.10+48]
+  t.11 = [root]
+  t.11 = [t.11+72]
+  t.12 = [root]
+  t.12 = [t.12+68]
+  t.13 = [root]
+  t.13 = [t.13+68]
+  t.14 = [root]
+  t.14 = [t.14+68]
+  t.15 = [root]
+  t.15 = [t.15+68]
+  t.16 = [root]
+  t.16 = [t.16+68]
+  t.17 = [root]
+  t.17 = [t.17+52]
+  t.18 = [root]
+  t.18 = [t.18+72]
+  t.19 = [root]
+  t.19 = [t.19+68]
+
+func Tree.Init(this v_key)
+
+func Tree.SetRight(this rn)
+
+func Tree.SetLeft(this ln)
+
+func Tree.GetRight(this)
+
+func Tree.GetLeft(this)
+
+func Tree.GetKey(this)
+
+func Tree.SetKey(this v_key)
+
+func Tree.GetHas_Right(this)
+
+func Tree.GetHas_Left(this)
+
+func Tree.SetHas_Left(this val)
+
+func Tree.SetHas_Right(this val)
+
+func Tree.Compare(this num1 num2)
+
+func Tree.Insert(this v_key)
+  t.0 = HeapAllocZ(28)
+  [t.0] = :vmt_Tree
+  t.1 = [new_node]
+  t.1 = [t.1+0]
+  t.2 = [current_node]
+  t.2 = [t.2+20]
+  t.3 = [current_node]
+  t.3 = [t.3+32]
+  t.4 = [current_node]
+  t.4 = [t.4+16]
+  t.5 = [current_node]
+  t.5 = [t.5+36]
+  t.6 = [current_node]
+  t.6 = [t.6+8]
+  t.7 = [current_node]
+  t.7 = [t.7+28]
+  t.8 = [current_node]
+  t.8 = [t.8+12]
+  t.9 = [current_node]
+  t.9 = [t.9+40]
+  t.10 = [current_node]
+  t.10 = [t.10+4]
+
+func Tree.Delete(this v_key)
+  t.0 = [current_node]
+  t.0 = [t.0+20]
+  t.1 = [current_node]
+  t.1 = [t.1+32]
+  t.2 = [current_node]
+  t.2 = [t.2+16]
+  t.3 = [current_node]
+  t.3 = [t.3+28]
+  t.4 = [current_node]
+  t.4 = [t.4+12]
+  t.5 = [current_node]
+  t.5 = [t.5+28]
+  t.6 = [current_node]
+  t.6 = [t.6+32]
+
+func Tree.Remove(this p_node c_node)
+
+func Tree.RemoveRight(this p_node c_node)
+
+func Tree.RemoveLeft(this p_node c_node)
+
+func Tree.Search(this v_key)
+  t.0 = [current_node]
+  t.0 = [t.0+20]
+  t.1 = [current_node]
+  t.1 = [t.1+32]
+  t.2 = [current_node]
+  t.2 = [t.2+16]
+  t.3 = [current_node]
+  t.3 = [t.3+28]
+  t.4 = [current_node]
+  t.4 = [t.4+12]
+
+func Tree.Print(this)
+
+func Tree.RecPrint(this node)
+
