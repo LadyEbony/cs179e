@@ -1,4 +1,4 @@
-class BinaryTree{
+class BinaryTree {
     public static void main(String[] a){
 	System.out.println(new BT().Start());
     }
@@ -12,6 +12,7 @@ class BT {
     public int Start(){
 	Tree root ;
 	boolean ntb ;
+	int nti ;
 	int nti ;
 
 	root = new Tree();

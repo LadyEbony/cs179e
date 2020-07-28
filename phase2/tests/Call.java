@@ -1,4 +1,4 @@
-class Main {
+class Call {
 	public static void main(String[] a){
 		System.out.println(new A().run());
 	}
@@ -6,8 +6,7 @@ class Main {
 
 class A {
 	public int run() {
-		int x;
-		y = 1; // TE: Name error!  Variable 'y' doesn't exist.
-		return x;
+		System.out.println(42);
+		return 99;
 	}
 }
