@@ -60,6 +60,11 @@ public class ProgramVerifier {
 			}
 			
 			env.size = (fields.size() + 1) * 4;
+			ClassEnvironment parent = env.parent;
+			while(parent != null){
+					env.size += parent.size - 4;
+					parent = parent.parent;
+			}
 			
 			//env.debug();
 		}

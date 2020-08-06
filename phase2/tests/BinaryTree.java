@@ -13,7 +13,6 @@ class BT {
 	Tree root ;
 	boolean ntb ;
 	int nti ;
-	int nti ;
 
 	root = new Tree();
 	ntb = root.Init(16);

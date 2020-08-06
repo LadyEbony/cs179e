@@ -5,7 +5,7 @@ import syntaxtree.*;
 import typevisitor.*;
 import java.util.Vector;
 
-public class Typecheck {
+public class J2V {
    public static void main(String[] args) throws ParseException {
 
       InputStreamReader r = new InputStreamReader(System.in);
@@ -52,6 +52,7 @@ public class Typecheck {
       System.out.println("Program type checked successfully");
 	  
 	  try{
+		  System.out.println(System.out);
 		File file = new File("test.vapor");  
 		file.delete();
 		file.createNewFile();
