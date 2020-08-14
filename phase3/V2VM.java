@@ -10,15 +10,29 @@ import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class V2VM {
 	public static void main(String[] args) {
 		try{
 			VaporProgram program = parseVapor(System.in, System.err);
-			VFunction[] functions = program.functions;
-			for(VFunction f: functions){
-				System.out.println(f.index);
+			
+			IntervalInitializer ii = new IntervalInitializer();
+			IntervalLinearSearch ils = new IntervalLinearSearch();
+			
+			for(VFunction func: program.functions){
+				
+				List<Interval> intervals = ii.Initialize(func);
+				System.out.println("Function: " + func.index);
+				for(Interval i: intervals){
+					System.out.println(i.var + " [" + i.startValue() + "-" + i.endValue() + "], " + i.bonus);
+				}
+				System.out.println("-------------------");
+				
+				//ils.linearScanRegisterAllocation(intervals);
+				//System.out.println();
+				//System.out.println();
+				//System.out.println();
 			}
 			
 		} catch (IOException ex) {

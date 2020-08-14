@@ -1,37 +1,32 @@
-package typevisitor;
-import syntaxtree.*;
-import visitor.*;
-import java.util.*;
 
 public class Interval {
-	private String intervalString;
-	private int startInterval;
-	private int endInterval;
+	public String var;
+	public char register;
+	public int registerIndex;
+	
+	public int start;
+	public int end;
+	public int bonus;
+	
+	public boolean aliveAfterFunction;
 
 	public Interval(String s, int a, int b) {
-		intervalString = s;
-		startInterval = a;
-		endInterval = b;
+		var = s;
+		register = 0;
+		registerIndex = 0;
+		
+		start = a;
+		end = b;
+		
+		aliveAfterFunction = false;
 	}
-
-	public String getString() {
-		return intervalString;
+	
+	public int startValue(){
+		return start * 2 + bonus;
 	}
-
-	public int getStart() {
-		return startInterval;
-	}
-
-	public int getEnd() {
-		return endInterval;
-	}
-
-	public void setStart(int a) {
-		startInterval = a;
-	}
-
-	public void setEnd(int a) {
-		endInterval = a;
+	
+	public int endValue(){
+		return end * 2;
 	}
 	
 }
