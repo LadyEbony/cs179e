@@ -1,43 +1,27 @@
 import java.util.*;
 
 public class IVIStruct {
-	public String dest;
-	public String[] source;
+	public Set<String> dest;
+	public Set<String> source;
 	
-	public boolean isFunction;
 	public String ifLabel;
 	public String gotoLabel;
 	
-	public IVIStruct(String d, String[] s, boolean func, String ifl, String gotol){
+	public IVIStruct(Set<String> d, Set<String> s, String ifl, String gotol){
 		dest = d;
 		source = s;
 		
-		isFunction = func;
 		ifLabel = ifl;
 		gotoLabel = gotol;
 	}
 	
-	public IVIStruct(String d, String[] s){
+	public IVIStruct(Set<String> d, Set<String> s){
 		dest = d;
 		source = s;
-	}
-	
-	public IVIStruct(String d, String s, boolean func, String ifl, String gotol){
-		dest = d;
-		source = new String[]{ s };
-		
-		isFunction = func;
-		ifLabel = ifl;
-		gotoLabel = gotol;
-	}
-	
-	public IVIStruct(String d, String s){
-		dest = d;
-		source = new String[]{ s };
 	}
 	
 	public String toString(){
-		return String.format("dest: %s | source: %s | %s", dest, Arrays.toString(source), Boolean.toString(isFunction));
+		return String.format("dest: %s | source: %s | %s", String.join(",", dest), String.join(",", source));
 	}
 	
 }

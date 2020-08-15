@@ -25,7 +25,7 @@ public class V2VM {
 				List<Interval> intervals = ii.Initialize(func);
 				System.out.println("Function: " + func.index);
 				for(Interval i: intervals){
-					System.out.println(i.var + " [" + i.startValue() + "-" + i.endValue() + "], " + i.bonus);
+					System.out.println(i.var + " [" + i.start + "-" + i.end + "], " + Boolean.toString(i.calleeSaved));
 				}
 				System.out.println("-------------------");
 				
