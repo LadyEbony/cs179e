@@ -4,8 +4,7 @@ public class Interval {
 	public int start;
 	public int end;
 	
-	public char register;
-	public int registerIndex;
+	public String register;
 	public boolean calleeSaved;
 
 	public Interval(String s, int a, int b) {

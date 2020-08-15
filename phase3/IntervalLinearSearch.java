@@ -2,53 +2,37 @@ import java.util.*;
 
 public class IntervalLinearSearch {
 
-	boolean[] sPool;
-	boolean[] tPool;
+	String[] registers = new String[] { "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7", "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7" };
 
+	List<String> registerPool;
 	List<Interval> active;
 	Hashtable<String, String> map;
 	
-	public void linearScanRegisterAllocation(List<Interval> intervals) { //somehow need to pass in a List of generated intervals
+	public Hashtable<String, String> linearScanRegisterAllocation(List<Interval> intervals) { //somehow need to pass in a List of generated intervals
 		// booleans 
-		sPool = new boolean[8];
-		tPool = new boolean[8];
-
+		registerPool = new ArrayList<String>((Arrays.asList(registers)));
 		active = new LinkedList<Interval>();
 		map = new Hashtable<String, String>();
 		
-		// intervals is automatically in start point order
+		Collections.sort(intervals, new SortByStart());
 		for(Interval i: intervals){
 			// ignore variables that's never used
 			if (i.start == i.end) continue;
 			
 			expireOldInterval(i);
 			
-			if(active.size() == 16) { //we have 23 registers
-				System.out.println("we need to spill");
-				//spillAtInterval(iter); //once all 23 occupied we spill
+			if(registerPool.size() == 0) { 
+				spillAtInterval(i); //once all 23 occupied we spill
 			} else {
-				char r;
-				int rindex;
-				if (i.aliveAfterFunction){
-					r = 's';
-					rindex = 0;
-					while(sPool[rindex]) rindex++;
-					sPool[rindex] = true;
-				} else {
-					r = 't';
-					rindex = 0;
-					while(tPool[rindex]) rindex++;
-					tPool[rindex] = true;
-				}
+				String register = getRegister(i.calleeSaved);
 				
-				i.register = r;
-				i.registerIndex = rindex;
+				i.register = register;
 				active.add(i);
-				
-				System.out.println(i.var + ": " + r + rindex);
+				map.put(i.var, "$" + register);
 			}
 		}
 		
+		return map;
 	}
 
 	public void expireOldInterval(Interval cur) {
@@ -57,44 +41,62 @@ public class IntervalLinearSearch {
 		Iterator<Interval> next = active.iterator();
 		while(next.hasNext()){
 			Interval i = next.next();
-			if(i.endValue() >= cur.startValue()) { //if the next interval's end is greater than our start, means overlap
+			if(i.end >= cur.start) { //if the next interval's end is greater than our start, means overlap
 				return;
 			}
 			
 			// free pool index
-			char register = i.register;
-			if (register == 't'){
-				tPool[i.registerIndex] = false;
-			} else if (register == 's'){
-				sPool[i.registerIndex] = false;
-			} else {
-				System.out.println("BIG ERROR");
-			}
-			System.out.println("Freeing " + i.register + i.registerIndex);
-			System.out.println("Freeing " + i.register + i.registerIndex + "(" + i.endValue() + " < " + cur.startValue() + ")");
-			
+			freeRegister(i.register);
 			next.remove();
 		}
 	}
+	
+	public void spillAtInterval(Interval cur){
+		System.out.println("TODO: Add spill");
+	}
 
-	/*
-	public void spillAtInterval(Interval curr) {
-		Interval spill = null;
-		active.sort(Comparator.comparingInt(Interval::getEnd)); 
-		spill = active.get(active.size() - 1);
-		if(spill.getEnd() > curr.getEnd()) {
-			active.remove(spill);
-			active.add(curr);
+	private String getRegister(boolean callee){
+		if (callee){
+			for(int i = 0; i < registerPool.size(); ++i){
+				if (registerPool.get(i).charAt(0) == 's'){
+					return registerPool.remove(i);
+				}
+			}
+			System.out.println("Error ran out of s registers");
 		}
-		else {
-			//doesn't matter for now
+		return registerPool.remove(0);
+	}
+	
+	private void freeRegister(String register){
+		registerPool.add(register);
+		Collections.sort(registerPool, new SortRegister());
+	}
+	
+
+	class SortByStart implements Comparator<Interval>{
+		public int compare(Interval a, Interval b){
+			return a.start - b.start;
 		}
 	}
-	*/
-
+	
 	class SortByEnd implements Comparator<Interval>{
 		public int compare(Interval a, Interval b){
 			return a.end - b.end;
+		}
+	}
+	
+	class SortRegister implements Comparator<String>{
+		public int compare(String a, String b){
+			char ac = a.charAt(0);
+			char bc = b.charAt(0);
+			if (ac == bc){
+				return a.charAt(1) - b.charAt(1);
+			}
+			if (ac == 's')
+				return 1;
+			if (ac == 't')
+				return -1;
+			return 0;
 		}
 	}
 	

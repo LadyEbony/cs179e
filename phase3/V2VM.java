@@ -23,13 +23,13 @@ public class V2VM {
 			for(VFunction func: program.functions){
 				
 				List<Interval> intervals = ii.Initialize(func);
-				System.out.println("Function: " + func.index);
-				for(Interval i: intervals){
-					System.out.println(i.var + " [" + i.start + "-" + i.end + "], " + Boolean.toString(i.calleeSaved));
-				}
-				System.out.println("-------------------");
+				//System.out.println("Function: " + func.index);
+				//for(Interval i: intervals){
+				//	System.out.println(i.var + " [" + i.start + "-" + i.end + "], " + Boolean.toString(i.calleeSaved));
+				//}
+				//System.out.println("-------------------");
 				
-				//ils.linearScanRegisterAllocation(intervals);
+				ils.linearScanRegisterAllocation(intervals);
 				//System.out.println();
 				//System.out.println();
 				//System.out.println();
