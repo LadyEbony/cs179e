@@ -16,9 +16,6 @@ public class IntervalLinearSearch {
 		
 		Collections.sort(intervals, new SortByStart());
 		for(Interval i: intervals){
-			// ignore variables that's never used
-			if (i.start == i.end) continue;
-			
 			expireOldInterval(i);
 			
 			if(registerPool.size() == 0) { 

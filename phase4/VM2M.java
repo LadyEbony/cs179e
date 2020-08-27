@@ -12,34 +12,19 @@ import java.io.PrintStream;
 
 import java.util.*;
 
-public class V2VM {
+public class VM2M {
 	public static void main(String[] args) {
 		try{
 			VaporProgram program = parseVapor(System.in, System.err);
-			
-			VaporConvertor vc = new VaporConvertor();
-			IntervalInitializer ii = new IntervalInitializer();
-			IntervalLinearSearch ils = new IntervalLinearSearch();
-			
-			String header = vc.GetHeader(program);
-			System.out.println(header);
+			VaporMConverter vmc = new VaporMConverter();
 			
 			for(VFunction func: program.functions){
-				
-				List<Interval> intervals = ii.Initialize(func);
-				//System.out.println("Function: " + func.index);
-				//for(Interval i: intervals){
-				//	System.out.println(i.var + " [" + i.start + "-" + i.end + "], " + Boolean.toString(i.calleeSaved));
-				//}
-				//System.out.println("-------------------");
-				
-				Hashtable<String, String> map = ils.linearScanRegisterAllocation(intervals);
-				String content = vc.GetFunction(func, map);
+				String content = vmc.GetFunction(func);
 				System.out.println(content);
-				//System.out.println();
-				//System.out.println();
-				//System.out.println();
 			}
+			
+			String ext = vmc.GetExtensionFunctions();
+			System.out.println(ext);
 			
 		} catch (IOException ex) {
 			System.out.println(ex.toString());
@@ -51,9 +36,15 @@ public class V2VM {
 			Op.Add, Op.Sub, Op.MulS, Op.Eq, Op.Lt, Op.LtS,
 			Op.PrintIntS, Op.HeapAllocZ, Op.Error,
 		};
-		boolean allowLocals = true;
-		String[] registers = null;
-		boolean allowStack = false;
+		boolean allowLocals = false;
+		String[] registers = {
+			"v0", "v1",
+			"a0", "a1", "a2", "a3",
+			"t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+			"s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+			"t8",
+		};
+		boolean allowStack = true;
 
 		VaporProgram tree;
 		try {
